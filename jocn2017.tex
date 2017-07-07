@@ -115,7 +115,7 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+  \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
   % \graphicspath{{../pdf/}{../jpeg/}}
   % and their extensions so you won't have to specify these with
@@ -360,7 +360,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{\textbf{Improving Energy Saving Performances Based on Users' Activation Prediction in Broadband Access Networks}}
+\title{\textbf{Improving Energy Efficiency Based on User State Prediction in Broadband Access Networks}}
 %\title{\Huge{\textbf{Dynamic Bandwidth and Wavelength Allocation Scheme for Next-Generation Wavelength-Aglie EPON}}}
 %
 %
@@ -373,14 +373,13 @@
 % was not built to handle multiple paragraphs
 %
 
-\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\thanks{M. Shell was with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
-\thanks{J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
-\thanks{Manuscript received April 19, 2005; revised August 26, 2015.}}
+\author{Jialong Li, Zhizhen Zhong, Nan Hua, Xiaoping Zheng, and Bingkun Zhou% <-this % stops a space
+%\thanks{Manuscript received April 19, 2016; revised August 26, 2016; accepted August 26, 2016.}
+%\thanks{M. Shell was with the Department
+%of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
+%GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
+\thanks{Manuscript received XX XX, 20XX; revised XX XX, 20XX; accepted XX XX, 20XX. This work was supported in part by projects under National 973 Program grant No. 2014CB340104/05 and NSFC under grant No. 61621064.}
+\thanks{The authors are with the Tsinghua National Laboratory for Information Science and Technology (TNList), Department of Electronic Engineering, Tsinghua University, Beijing 100084, China (e-mail: xpzheng@mail.tsinghua.edu.cn; huan@mail.tsinghua.edu.cn).}}
 
 % note the % following the last \IEEEmembership and also \thanks - 
 % these prevent an unwanted space from occurring between the last author name
@@ -403,7 +402,7 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 
 
 % The paper headers
-\markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2015}%
+\markboth{Journal of Optical Communications and Networking}%
 {Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for IEEE Journals}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
@@ -436,7 +435,7 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-The abstract goes here.
+Fiber to the home (FTTH) is widely implemented to provide higher bandwidth and lower end-to-end packet delay for subscribers. Among many optical access network technologies, passive optical network (PON) is a priority in FTTH deployment for its energy efficiency feature as well as deployment scalability. Due to the high energy consumption of the Optical Network Unit (ONU), a component of PON system, cyclic sleep mode is applied to save energy. Conventional cyclic sleep schemes strive to find a balance between energy efficiency and Quality of Service (QoS). With the rise of FTTH, a ONU only serves a few subscribers and it experiences longer idle time than before, which leaves much room for energy efficiency. In this paper, we classify the users' states into two types, i.e., active state and idle state. We prolong the sleep period when users are idle to reduce energy consumption. If the users are in active state, we cut down the sleep period to ensure the QoS. Since the sleep period need to be determined before an ONU goes into sleep state, we predict the users' states by their historical activities, which are from the actual data set. Simulation results show that our proposed scheme can achieve a considerable energy efficiency and QoS improvement.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -477,32 +476,49 @@ TDM-PON, Cyclic Sleep Mode, Machine Learning, Energy saving, FTTH.
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{F}{iber} to the home (FTTH) is being deployed worldwide to meet the huge bandwidth requirements driven by real-time video streaming and virtual reality (VR). According to the reports released by FTTH Council Europe, the number of FTTH subscribers in the world reaches 47 millions by the end of 2016. It is forecasted that 23 millions subscribers will be added in the next three years \cite{ftth}. Compared to the digital subscriber line (DSL) access and fiber to the building (FTTB), FTTH can provide lower end-to-end latency and higher line rates.
+\IEEEPARstart{F}{iber} to the home (FTTH) is being deployed worldwide to meet the huge bandwidth requirements driven by real-time video streaming and virtual reality (VR). According to the reports released by FTTH Council Europe, the number of FTTH subscribers in the world reaches 47 millions by the end of 2016. It is forecasted that 23 millions subscribers will be added in the next three years \cite{ftth}.
 
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-
-Passive Optical Network (PON) is widely implemented in FTTH for its passive features as well as easy deployment and scalability. International Telecommunication Union (ITU) has proposed the 10-Gigabit-capable symmetric passive optical network (XGS-PON) to accelerate the development of the access networks \cite{IEEERecommend}. XGS-PON is hopefully supporting higher data rates as well as staying backward compatible.
+In general, we use FTTx to represent the fiber access networks. Several access architectures are classified in \cite{IEEFTTx}, including fiber to the curb (FTTC), fiber to the building (FTTB), and fiber to the desktop (FTTD). Compared to the FTTC/FTTB, fibers are terminated at users' home or even users' main computer in FTTH/FTTD, which can provide lower end-to-end latency and higher line rates. Among many access technologies, Passive Optical Network (PON) is widely implemented in FTTH for its passive features as well as easy deployment and scalability. International Telecommunication Union (ITU) has proposed the 10-Gigabit-capable symmetric passive optical network (XGS-PON) to accelerate the development of the access networks \cite{IEEERecommend}. XGS-PON is hopefully supporting higher data rates as well as staying backward compatible.
 
 While more and more users enjoy the high-quality services provided by FTTH, the operators are concerned about the energy efficiency under the guideline of green telecommunication. It is estimated that up to 10\% of the world energy is used in information and communication technology (ICT) industry while telecommunication plays a dominant role in energy consumption. Though PON are more energy efficiency than copper-based access networks, they still are energy-hungry. Among the components of PON, the Optical Network Units (ONUs) consume most of the energy, mainly up to 60\% \cite{kani2013power}. In FTTH scenarios, more ONUs will be deployed and energy effciency factor should be considered carefully.
 
-Cyclic sleep mode has been defined in ITU standards to build a energy efficiency system. In cyclic sleep mode, there are two major states: active state and sleep state. In active state, ONUs can send and receive arriving packets, while transmitting and receiving functions are disabled in sleep state. ONUs are changed between the two states periodically to save energy and stay the ability to transmit data. Many previous works aiming at energy efficiency are based on cyclic sleep \cite{6172273, 5706311, 5360736}. 
-%Kubo et al. \cite{kubo2010adaptive} propose a power saving mechanism with variable sleep period. The proposed mechanism is evaluated under two sleep period determination algorithms, packet interval-based and service-based. Bang et al. \cite{6093689} put forward power saving algorithm to balance the power consumption and state transition delay in cyclic mode. Fiammengo et al. \cite{fiammengo2011experimental} conduct experiments to evaluate the performance of cyclic sleep with adaptive sleep period. Results show that around 60\% to 70\% energy savings are achieved under different traffic patterns.
+Cyclic sleep mode has been defined in ITU standards to build a energy efficiency system. In cyclic sleep mode, there are two major states: active state and sleep state. In active state, ONUs can send and receive arriving packets, while transmitting and receiving functions are disabled in sleep state. ONUs are changed between the two states periodically to save energy and stay the ability to transmit data. Many previous works aiming at energy efficiency are based on cyclic sleep \cite{6172273, 5706311, 5360736, 6069715}. Mohammed et al. \cite{7489960} proposed an early wake-up algorithm, which aims at meeting the upstream packet delay while reducing energy consumption as much as possible. Dhaini et al. \cite{6512637} put forward a novel scheduling framework for green bandwidth allocation, which uses the batch-mode transmission feature to cut down the overhead brought by frequent power state transitions. Maneyama et al. \cite{6954287} presented a cyclic sleep control scheme to tackle with different quality of service (QoS) requirements. The work in \cite{kim2014dual} developed a dual cyclic sleep mode to control sleep period for the transmitter and receiver separately. Experiment results show that the proposed mode achieves better energy saving than the conventional cyclic mode. Nomura et al. \cite{nomura2012onu} studied energy saving performance by considering users' traffic distributions. Numerical simulations indicate that up to 60\% energy consumption is reduced.
 
-The major limitation of the aforementioned works is that the sleep period determination based on packet interval may not predict the incoming traffic condition precisely. Improper sleep period may degrade the energy saving performance and influence the quality of service (QoS). To overcome this limitation, Maneyama et al. present a cyclic sleep control scheme based on the queue length information. Compared with 
-compare
+The reason why cyclic sleep mode can be applied to PON is that the channel is not always under heavy load and an idle ONU can be put into sleep state to save energy. The limitation of the aforementioned works is that the traffic generation is based on FTTB scenarios, where tens to hundreds of subscribers are connected to one ONU. In general, the aggregated traffic of a ONU is high at night in residential areas. On the contrary, the peak traffic flow usually happens in the daytime in business areas. This is called tidal effect and it is well studied in \cite{7444562, 6848766}. On FTTH scenarios, only a few users are served by a ONU and the aggregated traffic can not be simply modeled by tidal effect. ONUs are idle in 80\% of the time, which leaves much room for energy efficiency. Further more, sleep period in cyclic sleep should be predefined before an ONU goes into sleep state. Improper sleep period may degrade the energy saving performance and influence the QoS. In this paper, we classify the users' states into two types, namely idle and active. When the users are in idle state, longer sleep period can be applied to improve the energy saving. If the users are in active state, we decrease the sleep period to ensure the packet delay and packet loss ratio. To make our proposed scheme more practical in reality, the users' states are predicted by their historical activities, which are from the actual data set.
 
-
+The rest of the paper is organized as follows. Section II presents the system model, including FTTH architecture, and cyclic sleep mode. Section III illustrates the procedures of predicting users' state based on decision tree method. In section IV, we show the numerical evaluation, and section V concludes the paper.
 
 
-\subsection{Subsection Heading Here}
-Subsection text here.
+\section{System Model}
+
+\begin{figure}[t]
+    \centering 
+        \includegraphics[width=0.9\columnwidth]{PON.pdf}\\ 
+    \caption{ FTTH architecture based on PON.}
+    \label{PON}
+\end{figure}
+
+In this section, we first introduce the FTTH architecture based on PON, then we illustrate the cyclic sleep mode.
+
+\subsection{FTTH Architecture Based on PON}
+Fig. \ref{PON} depicts the FTTH architecture based on PON technology. A PON is a point-to-multipoint network with no active components between ONU and Opitcal Line Terminal (OLT), which locates in the central office (CO). In downstream, OLT is responsible for packet brocasting. Each ONU extracts its corresponding data and transfer to the users. In upstream, ONUs aggregate the packets and transmit them to the OLT. To avoid packet collisions, an ONU only transmit upstream data during the time slot assigned by OLT, which is called Time-Division Multiple Access (TDMA). The interior elements between the OLT and ONU are power splitters. Since fewer subscribers are supported by one ONU on FTTH scenarios, more ONUs are required in the system. Considering the power budget, a typical split ratio ranges from 32 to 256. Higher split ratio can be achieved by adding more wavelengths in the system. The authors in \cite{luo2013time} develop a PON prototype with a 1 : 512 split ratio.
+
+\subsection{Cyclic Sleep Mode}
+
+\section{User State Prediction}
+
+\section{Performance Evaluation}
+
+\section{Conclusion}
+
+%\subsection{Subsection Heading Here}
+%Subsection text here.
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+%\subsubsection{Subsubsection Heading Here}
+%Subsubsection text here.
 
 
 % An example of a floating figure using the graphicx package.
@@ -600,16 +616,6 @@ Subsubsection text here.
 % \fnbelowfloat command of the stfloats package.
 
 
-
-
-\section{System Model}
-The conclusion goes here.
-
-\section{User Activity Prediction}
-
-\section{Performance Evaluation}
-
-\section{Conclusion}
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
 % or
