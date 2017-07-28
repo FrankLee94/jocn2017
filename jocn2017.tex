@@ -105,12 +105,11 @@
 % http://www.ctan.org/pkg/cite
 % The documentation is contained in the cite.sty file itself.
 
-
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
 \usepackage{textcomp}
 \usepackage{algorithm}
 \usepackage{subfigure}
 \usepackage{booktabs}
-
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
@@ -360,7 +359,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{\textbf{Improving Energy Efficiency Based on User State Prediction in Broadband Access Networks}}
+\title{\textbf{Improving Energy Efficiency and QoS performances Based on User State Predictions in Optical Access Networks}}
 %\title{\Huge{\textbf{Dynamic Bandwidth and Wavelength Allocation Scheme for Next-Generation Wavelength-Aglie EPON}}}
 %
 %
@@ -435,12 +434,12 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-Fiber to the home (FTTH) is widely implemented to provide higher bandwidth and lower end-to-end packet delay for subscribers. Among many optical access network technologies, passive optical network (PON) is a priority in FTTH deployment for its energy efficiency feature as well as deployment scalability. Due to the high energy consumption of the Optical Network Unit (ONU), a component of PON system, cyclic sleep mode is applied to save energy. Conventional cyclic sleep schemes strive to find a balance between energy efficiency and Quality of Service (QoS). With the rise of FTTH, a ONU only serves a few subscribers and it experiences longer idle time than before, which leaves much room for energy efficiency. In this paper, we classify the users' states into two types, i.e., active state and idle state. We prolong the sleep period when users are idle to reduce energy consumption. If the users are in active state, we cut down the sleep period to ensure the QoS. Since the sleep period need to be determined before an ONU goes into sleep state, we predict the users' states by their historical activities, which are from the actual data set. Simulation results show that our proposed scheme can achieve a considerable energy efficiency and QoS improvement.
+Optical access networks are widely implemented to provide higher bandwidth and lower end-to-end packet delay for subscribers. Among many access technologies, passive optical network (PON) is a priority for its energy efficiency feature as well as deployment scalability. With the rise of fiber to the home (FTTH), an Optical Network Unit (ONU) only serves a few subscribers and it will experience longer idle time than before, which leaves much room for energy efficiency. Due to the high energy consumption of the ONU, cyclic sleep mode is applied to reduce the energy consumption. The main idea of cyclic sleep mode is that the ONU goes into sleep status periodically when subscribers are in idle state. Conventional cyclic sleep schemes, which adopt static sleep time, strive to find a balance between energy efficiency and Quality of Service (QoS). In other words, the energy efficiency brought by cyclic schemes is with the cost of degradation of QoS, which may not satisfy the subscribers' requirements. Long sleep time is good for energy efficiency but may deteriorate the QoS, while short sleep time mitigates the degradation of QoS but impairs the energy efficiency. To improve the energy efficiency while maintain the QoS performances, in this paper, we classify the users' states into two types, i.e., active state and idle state. We adopt the long sleep time when users are idle to reduce energy consumption. If the users are in active state, we use the short sleep time to ensure the QoS. Since the sleep time need to be determined before an ONU goes into sleep status, we predict the users' states by their historical activities, which are from the actual data set. Simulation results show that our proposed scheme can achieve a considerable energy efficiency and QoS improvement.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-TDM-PON, Cyclic Sleep Mode, Machine Learning, Energy saving, FTTH.
+TDM-PON, Cyclic Sleep Mode, Energy Saving, QoS, FTTH.
 \end{IEEEkeywords}
 
 
@@ -478,33 +477,42 @@ TDM-PON, Cyclic Sleep Mode, Machine Learning, Energy saving, FTTH.
 % and "HIS" in caps to complete the first word.
 \IEEEPARstart{F}{iber} to the home (FTTH) is being deployed worldwide to meet the huge bandwidth requirements driven by real-time video streaming and virtual reality (VR). According to the reports released by FTTH Council Europe, the number of FTTH subscribers in the world reaches 47 millions by the end of 2016. It is forecasted that 23 millions subscribers will be added in the next three years \cite{ftth}.
 
-In general, we use FTTx to represent the fiber access networks. Several access architectures are classified in \cite{IEEFTTx}, including fiber to the curb (FTTC), fiber to the building (FTTB), and fiber to the desktop (FTTD). Compared to the FTTC/FTTB, fibers are terminated at users' home or even users' main computer in FTTH/FTTD, which can provide lower end-to-end latency and higher line rates. Among many access technologies, Passive Optical Network (PON) is widely implemented in FTTH for its passive features as well as easy deployment and scalability. International Telecommunication Union (ITU) has proposed the 10-Gigabit-capable symmetric passive optical network (XGS-PON) to accelerate the development of the access networks \cite{IEEERecommend}. XGS-PON is hopefully supporting higher data rates as well as staying backward compatible.
+In general, we use FTTx to represent the fiber access networks. Several access architectures are classified in \cite{IEEFTTx}, including fiber to the curb (FTTC), fiber to the building (FTTB), and fiber to the desktop (FTTD). Compared to the FTTC/FTTB, fibers are terminated at users' home or even users' main computer in FTTH/FTTD, which can provide lower end-to-end packet delay and higher line rates. Among many access technologies, Passive Optical Network (PON) is widely implemented in FTTH for its passive features as well as easy deployment and scalability. International Telecommunication Union (ITU) has proposed the 10-Gigabit-capable symmetric passive optical network (XGS-PON) to accelerate the development of the access networks \cite{IEEERecommend}. XGS-PON is hopefully supporting higher data rates as well as staying backward compatible.
 
-While more and more users enjoy the high-quality services provided by FTTH, the operators are concerned about the energy efficiency under the guideline of green telecommunication. It is estimated that up to 10\% of the world energy is used in information and communication technology (ICT) industry while telecommunication plays a dominant role in energy consumption. Though PON are more energy efficiency than copper-based access networks, they still are energy-hungry. Among the components of PON, the Optical Network Units (ONUs) consume most of the energy, mainly up to 60\% \cite{kani2013power}. In FTTH scenarios, more ONUs will be deployed and energy effciency factor should be considered carefully.
+While more and more users enjoy the high-quality services provided by FTTH, the operators are concerned about the energy efficiency under the guideline of green telecommunication. It is estimated that up to 10\% of the world energy is used in Information and Communication Technology (ICT) industry while telecommunication plays a dominant role in energy consumption. Though PONs are more energy efficiency than copper-based access networks, they still are energy-hungry in the perspective of the operators. Among the components of PON, the Optical Network Units (ONUs) consume most of the energy, accounting for nearly 60\% of the whole system \cite{kani2013power}. In FTTH scenario, more ONUs will be deployed and energy effciency factor should be considered carefully.
 
-Cyclic sleep mode has been defined in ITU standards to build a energy efficiency system. In cyclic sleep mode, there are two major states: active state and sleep state. In active state, ONUs can send and receive arriving packets, while transmitting and receiving functions are disabled in sleep state. ONUs are changed between the two states periodically to save energy and stay the ability to transmit data. Many previous works aiming at energy efficiency are based on cyclic sleep \cite{6172273, 5706311, 5360736, 6069715}. Mohammed et al. \cite{7489960} proposed an early wake-up algorithm, which aims at meeting the upstream packet delay while reducing energy consumption as much as possible. Dhaini et al. \cite{6512637} put forward a novel scheduling framework for green bandwidth allocation, which uses the batch-mode transmission feature to cut down the overhead brought by frequent power state transitions. Maneyama et al. \cite{6954287} presented a cyclic sleep control scheme to tackle with different quality of service (QoS) requirements. The work in \cite{kim2014dual} developed a dual cyclic sleep mode to control sleep period for the transmitter and receiver separately. Experiment results show that the proposed mode achieves better energy saving than the conventional cyclic mode. Nomura et al. \cite{nomura2012onu} studied energy saving performance by considering users' traffic distributions. Numerical simulations indicate that up to 60\% energy consumption is reduced.
+Cyclic sleep mode has been defined in ITU standards to build an energy efficiency system. In cyclic sleep mode, there are two major states: active state and sleep state. In active state, ONUs can send and receive arriving packets, while transmitting and receiving functions are disabled in sleep state. ONUs are changed between the two states periodically to save energy and stay the ability to transmit data. Many previous works aiming at energy efficiency are based on cyclic sleep mode \cite{6375895, 5706311, 5360736, 6069715}. Mohammed et al. \cite{7489960} proposed an early wake-up algorithm, which aims at meeting the upstream packet delay while reducing energy consumption as much as possible. Dhaini et al. \cite{6512637} put forward a novel scheduling framework for green bandwidth allocation, which uses the batch-mode transmission feature to cut down the overhead brought by frequent power state transitions. Maneyama et al. \cite{6954287} presented a cyclic sleep control scheme to tackle with different Quality of Service (QoS) requirements. The work in \cite{kim2014dual} developed a dual cyclic sleep mode to control sleep time for the transmitter and receiver separately. Experiment results show that the proposed mode achieves better energy saving than the conventional cyclic mode. Nomura et al. \cite{nomura2012onu} studied energy efficiency performances by considering the users' traffic distributions. Numerical simulations indicate that up to 60\% energy consumption is reduced.
 
-The reason why cyclic sleep mode can be applied to PON is that the channel is not always under heavy load and an idle ONU can be put into sleep state to save energy. The limitation of the aforementioned works is that the traffic generation is based on FTTB scenarios, where tens to hundreds of subscribers are connected to one ONU. In general, the aggregated traffic of a ONU is high at night in residential areas. On the contrary, the peak traffic flow usually happens in the daytime in business areas. This is called tidal effect and it is well studied in \cite{7444562, 6848766}. On FTTH scenarios, only a few users are served by a ONU and the aggregated traffic can not be simply modeled by tidal effect. ONUs are idle in 80\% of the time, which leaves much room for energy efficiency. Further more, sleep period in cyclic sleep should be predefined before an ONU goes into sleep state. Improper sleep period may degrade the energy saving performance and influence the QoS. In this paper, we classify the users' states into two types, namely idle and active. When the users are in idle state, longer sleep period can be applied to improve the energy saving. If the users are in active state, we decrease the sleep period to ensure the packet delay and packet loss ratio. To make our proposed scheme more practical in reality, the users' states are predicted by their historical activities, which are from the actual data set.
+The reason why cyclic sleep mode can be applied to PON is that the channel is not always under heavy load and an idle ONU can be put into sleep state to save energy. The limitation of the aforementioned works is that the traffic generation is mainly based on FTTB scenario, where tens to hundreds of subscribers are connected to one ONU. In general, the aggregated traffic of an ONU is high at night in residential areas. On the contrary, the peak traffic flow usually happens in the daytime in business areas. This is called tidal effect and it is well studied in \cite{7444562, 6848766}. In FTTH scenario, only a few users are served by an ONU and the aggregated traffic can not be simply modeled by tidal effect. ONUs are idle in 80\% of the time, which leaves much room for energy efficiency. Further more, sleep period in cyclic sleep should be predefined before an ONU goes into sleep state. Improper sleep period may degrade the energy efficiency and influence the QoS performances. In this paper, we classify the user state into two types, namely idle and active state, and we adopt different sleep time when the users are in different states. When the users are in idle state, longer sleep period can be applied to improve the energy efficiency. If the users are in active state, we decrease the sleep period to ensure the QoS performances. To make our proposed scheme more practical in reality, the user states are predicted by their historical activities, which are from the actual dataset.
 
-The rest of the paper is organized as follows. Section II presents the system model, including FTTH architecture, and cyclic sleep mode. Section III illustrates the procedures of predicting users' state based on decision tree method. In section IV, we show the numerical evaluation, and section V concludes the paper.
+The rest of the paper is organized as follows. Section II presents the system model, including FTTH architecture based on PON, cyclic sleep mode, and energy consumption model. Section III illustrates the procedures and results of predicting user states based on different methods. In section IV, we show the numerical evaluations, and section V concludes the paper.
 
 
 \section{System Model}
 
 \begin{figure}[t]
     \centering 
-        \includegraphics[width=0.9\columnwidth]{PON.pdf}\\ 
+        \includegraphics[width=1\columnwidth]{PON.pdf}\\ 
     \caption{ FTTH architecture based on PON.}
     \label{PON}
 \end{figure}
 
-In this section, we first introduce the FTTH architecture based on PON, then we illustrate the cyclic sleep mode.
+\begin{figure}[t]
+    \centering 
+        \includegraphics[width=1\columnwidth]{sleep.pdf}\\ 
+    \caption{ Cyclic sleep mode.}
+    \label{sleep}
+\end{figure}
+
+
+
+In this section, we first introduce the FTTH architecture based on PON, then we illustrate the cyclic sleep mode, finally the energy consumption model is presented.
 
 \subsection{FTTH Architecture Based on PON}
-Fig. \ref{PON} depicts the FTTH architecture based on PON technology. A PON is a point-to-multipoint network with no active components between ONU and Opitcal Line Terminal (OLT), which locates in the central office (CO). In downstream, OLT is responsible for packet brocasting. Each ONU extracts its corresponding data and transfer to the users. In upstream, ONUs aggregate the packets and transmit them to the OLT. To avoid packet collisions, an ONU only transmit upstream data during the time slot assigned by OLT, which is called Time-Division Multiple Access (TDMA). The interior elements between the OLT and ONU are power splitters. Since fewer subscribers are supported by one ONU on FTTH scenarios, more ONUs are required in the system. Considering the power budget, a typical split ratio ranges from 32 to 256. Higher split ratio can be achieved by adding more wavelengths in the system. The authors in \cite{luo2013time} develop a PON prototype with a 1 : 512 split ratio.
+Fig. \ref{PON} depicts the FTTH architecture based on PON technology. A PON is a point-to-multipoint network with no active components between ONU and Opitcal Line Terminal (OLT), which locates in the Central Office (CO). In downstream, OLT is responsible for packet brocasting. Each ONU extracts its corresponding data and transfer to the corresponding users. In upstream, ONUs aggregate the packets and transmit them to the OLT. To avoid packet collisions, an ONU only transmits upstream data during the time slot assigned by OLT, which is called Time-Division Multiple Access (TDMA). The interior elements between the OLT and ONU are power splitters. Since fewer subscribers are supported by one ONU in FTTH scenarios, more ONUs are required in a single PON system. Considering the power budget, a typical split ratio ranges from 32 to 256. Higher split ratio can be achieved by adding more wavelengths in the system. The authors in \cite{luo2013time} developed a PON prototype with a 1 : 512 split ratio.
 
 \subsection{Dynamic Bandwidth Allocation Scheme}
-As we mention before, the OLT grants the access to each ONU in upstream channel, and it needs an efficient way to assign the time slot, which it is called Dynamic Bandwidth Allocation (DBA). In this paper, we adopt interleaved polling with adaptive cycle time (IPACT) \cite{983911}, which is a widely used DBA scheme. The procedures of IPACT are described blow. Before $k$th ONU transmitting upstream data, the OLT sends a control message to it. The control message, called $Grant$ here, contains the time slot size information. Upon receiving the $Grant$, the $k$th ONU starts sending it packets during the granted time slot. At the end of the transmission, the $k$th ONU generates its own control message ($Report$), reporting how many data are left in the buffer. In the next polling cycle, the OLT will grant time slot size according to the $Report$. Due to the propagation delay between the OLT and ONU (typically 1 $\sim$ 100 $\mu$s), to make full use of channel bandwidth, the OLT sends $Grant$ to the $(k + 1)$th ONU before receiving packets from the $k$th ONU. Since the OLT knows the Round-Trip Time (RTT) to each ONU in the very beginning, it knows when it receives the last bit of the $k$th ONU. So the OLT sends $Grant$ in a proper time to make sure that the first bit of the $(k + 1)$th ONU will arrive soon after the last bit of the $k$th ONU arrives. Usually we set a small guard time interval ($T_{guard}$) to ensure safety.
+As we mention before, the OLT grants the access to each ONU in upstream channel, and it needs an efficient way to assign the time slot, which it is called Dynamic Bandwidth Allocation (DBA). In this paper, we adopt interleaved polling with adaptive cycle time (IPACT) \cite{983911}, which is a widely used DBA scheme. The procedures of IPACT are described blow. Before the $k$th ONU transmitting upstream data, the OLT sends a control message to it. The control message, called $Grant$ here, contains the time slot size information. Upon receiving the $Grant$, the $k$th ONU starts sending its packets during the granted time slot. At the end of the transmission, the $k$th ONU generates its own control message ($Report$) information, reporting how many data are left in the buffer. In the next polling cycle, the OLT will grant time slot size according to the $Report$. Due to the propagation delay between the OLT and ONU (typically 1 $\sim$ 100 $\mu$s), to make full use of channel bandwidth, the OLT sends $Grant$ to the $(k + 1)$th ONU before receiving packets from the $k$th ONU. Since the OLT knows the Round-Trip Time (RTT) to each ONU in the very beginning, it knows when it receives the last bit of the $k$th ONU. So the OLT sends $Grant$ in a proper time to make sure that the first bit of the $(k + 1)$th ONU will arrive soon after the last bit of the $k$th ONU arrives. Usually we set a small guard time interval ($T_{guard}$) to ensure safety.
 
 Note that, if the OLT grants time slot as much as the ONU requires, a heavy-load ONU may monopolize the channel for a long time, then packets from other ONUs may experience an excessive delay. To avoid this problem, we limit the time slot size to an upper bound, denoted $Max$\textunderscore $Grant$ here. The $Grant$ generated by the OLT can be expressed as follows.
 
@@ -520,85 +528,82 @@ Grant  =
 \end{equation}
 \end{footnotesize}
 
+
+
 \subsection{Cyclic Sleep Mode}
 
 \begin{figure}[t]
     \centering 
-        \includegraphics[width=1\columnwidth]{sleep.pdf}\\ 
-    \caption{ Cyclic sleep mode.}
-    \label{sleep}
-\end{figure}
-
-\begin{figure}[t]
-    \centering 
-        \includegraphics[width=0.8\columnwidth]{status.pdf}\\ 
-    \caption{ Status transfer diagram.}
+        \includegraphics[width=0.9\columnwidth]{status.pdf}\\ 
+    \caption{ State transfer diagram.}
     \label{status}
 \end{figure}
 
-Fig. \ref{sleep} shows the cyclic sleep mode. The main idea of cyclic sleep mode is that when no packets arrive, the ONU switches to the sleep state to reduce energy consumption. There are four status in a completed sleep cycle.
 
-\textbf{Active}: In active status, both ONU receivers and transmitters remain on. The ONU stays in high power level and all functions are enable.
+Fig. \ref{sleep} shows the cyclic sleep mode. The main idea of cyclic sleep mode is that when no packets arrive, the ONU switches to the sleep state to reduce energy consumption. There are four states in a completed sleep cycle.
 
-\textbf{Awaiting}: A transition status before an ONU goes into sleep status. Awaiting status can avoid too frequent status transitions between active and sleep status. Like active status, receiver and transmitter are working normally. During the awaiting status, when the ONU receives packets, it can switch to active status to send data. If no packet arrives or the buffer is empty during the awaiting time ($T_{awaiting}$), the ONU will turn to sleep status.
+\textbf{Active}: In active status, both ONU receivers and transmitters remain on. The ONU stays in high power level and all functions are enabled.
 
-\textbf{Sleep}: Both receivers and transmitters are powered off, staying in a lower power status. During the sleep status, the OLT stops sending control message to the ONU. The OLT needs to determine the sleep period ($T_{sleep}$) before an ONU goes into sleep status. Incoming packets have to be buffered and only can be transmitted in the active state.
+\textbf{Awaiting}: A transition status before an ONU goes into sleep status. Awaiting status can avoid too frequent transitions between active and sleep status. Like active status, receiver and transmitter are working normally in awaiting status. During the awaiting status, when the ONU receives packets, it can switch to active status to send data. If no packet arrives or the buffer is empty during the awaiting time ($T_{awaiting}$), the ONU will turn to sleep status.
+
+\textbf{Sleep}: Both receivers and transmitters are powered off, staying in a lower power level. During the sleep status, the OLT stops sending control message to the ONU. The OLT needs to determine the sleep time ($T_{sleep}$) before an ONU goes into sleep status. Incoming packets have to be buffered and only can be transmitted in the active state.
 
 \textbf{Recovery}: After the sleep time expires, the ONU needs to power up its receivers and transmitters, synchronize with the OLT, which is called recovery status. The recovery time ($T_{recovery}$) ranges from 2ms to 5ms \cite{mandin2008epon}.
 
-Fig. \ref{status} is the status transfer diagram, showing the relations between four status. In the following, we present the procedures of a completed sleep cycle.
+Fig. \ref{status} is the state transfer diagram, showing the relations between four status. In the following, we present the procedures of a completed sleep cycle.
 
 \textbf{1}. In a polling cycle, an ONU has no packets to transmit and generates the $Report$ message, telling the OLT that its buffer is empty. Then the ONU goes into awaiting status. The ONU 
 can quit the awaiting status in advance if packets arrive during the awaiting time, and report to the OLT how many data it want to transfer in the next polling cycle.
 
 \textbf{2}. After $T_{awaiting}$ time, the ONU's buffer is still empty, and it will ask the OLT for sleep. Then the OLT instructs the ONU to sleep status. When the ONU is in sleep status, the OLT will skip the sleeping ONU until the sleep time expires.
 
-\textbf{3}. At the end of the sleep period, the ONU needs to power up and synchronize with the OLT. After $T_{recovery}$ time, it sends message to the OLT, reporting how many data are in the buffer. 
+\textbf{3}. At the end of the sleep time, the ONU needs to power up itself and synchronize with the OLT. After $T_{recovery}$ time, it sends message to the OLT, reporting how many data are in the buffer. 
 
-\textbf{4}. If the ONU has required the time slot, it can turn into active status and transmit packets in the polling cycle. If the reporting data is zero, then the ONU goes into awaiting status and are ready for the next sleep cycle.
+\textbf{4}. If the ONU has required the time slot, it can turn into active status and transmit packets in the next polling cycle. If the reporting data is zero, then the ONU goes into awaiting status and are ready for the next sleep cycle.
 
-Once we know the time that an ONU stays in each status, we could calculate the power consumption. Active, awaiting, and recovery status are in high power level\footnote{In fact, the power consumption of recovery status is between high and low power level. For simplicity we assume the power comsumption is the same as active status. Readers could refer to \cite{6172273} for more details.}, and we use $P_{high}$ to represent the power consumption. In sleep status, the power consumption is $P_{low}$. And the average power consumption for an ONU can be calculated as follows.
+\subsection{Power Consumption Model}
+In this part, we mainly focus the energy consumption in the ONU side. Once we know the time that an ONU stays in each status, we could calculate the power consumption. Active, awaiting, and recovery status are in high power level\footnote{In fact, the power consumption of recovery status is between high and low power level. For simplicity we assume the power comsumption is the same as active status. Readers could refer to \cite{6172273} for more details.}, and we use $P_{high}$ to represent the power consumption. In sleep status, the power consumption is $P_{low}$. And the average power consumption for an ONU can be calculated as follows.
 
 \begin{footnotesize}
 \begin{equation}
-P = \frac{({T_{active} + T_{awaiting} + T_{recovery}}){P_{high}} + T_{sleep}P_{low}}{T_{active} + T_{awaiting} + T_{recovery} + T_{sleep}}
+P = \frac{\sum({T_{active} + T_{awaiting} + T_{recovery}}){P_{high}} + \sum T_{sleep}P_{low}}{\sum( {T_{active} +  T_{awaiting} + T_{recovery} + T_{sleep}})}
 \end{equation}
 \end{footnotesize}
 
-\section{User State Prediction}
+From the formulation, we could learn that long sleep time contributes to reduce the energy consumption. Short sleep time will conduct frequent power states transitions, and it will harm the energy efficiency since energy is wasted in frequent recovery processes. So in the perspective of energy efficiency, long sleep time would be a good choice. However, long sleep time may deteriorate the QoS performances, such as packet delay, packet loss ratio. The sleep time should be determined carefully to stay energy efficieny while satisfy the users' requirements. 
 
-\begin{figure}[t]
-	\centering 
-	\includegraphics[width=1\columnwidth]{user_state.pdf}\\ 
-	\caption{ Four users' states in a week.}
-	\label{user_state}
-\end{figure}
+\section{Modeling on User States}
 
-
-
-In previsou section, we know that cyclic sleep mode will activate when the ONU is idle. In this section, we try to model the ONU's status by knowing the users' states on FTTH/FTTD scenarios.
+In previous section, we know that cyclic sleep mode will activate when the ONU is idle. In FTTH/FTTD scenarios, an ONU only serves a few subscribers, and the ONU status could be inferred from the corresponding users' states. To make our model more close to the real situations, the user states are from the actual dataset. In this section, we try to model the ONU's status by knowing the users' states in FTTH/FTTD scenarios.
 
 \subsection{Dataset description}
-For simplicity, we classify the users' states into two types, namely active and idle state. To depict the user state distribution more precisely during a day, we model users' states by actual dataset \cite{Datatang}. This dataset records 1000 Internet users' activity logs in four weeks, through which we could know when the users are using Internet service. Further more, the dataset contains some demographic information about the 1000 Internet users, including gender, date of birth, and occupation, etc. Note that the users' names are not known for privacy protection reason. 
+To depict the user state distributions more precisely, we model the user states by actual dataset \cite{Datatang}. This dataset records 1000 Internet users' activity logs in four weeks, through which we could know when the users are using Internet service. For simplicity, we classify the user states into two types, namely active and idle state. We divide a day into 24 periods, in other words, each period last for an hour. During the period, if the user uses Internet service, we call this user active, otehrwise idle. According to the activity logs, we could infer the user states at each period. Further more, the dataset contains some demographic information about the 1000 Internet users, including gender, date of birth, and occupation, etc. Note that the users' names are not known for privacy protection reason. 
 
-We divide a day into 24 periods, namely each period last for an hour. During the period, if the user uses Internet service, we call this user active, otehrwise idle. According to the activity logs, we could infer the user state at each period. Fig. \ref{user_state} shows four users' states in a week, who are selected randomly from the 1000 Internet users. Fig. \ref{user_state} indicates that the users' active periods may be different from each other. On the FTTH scenarios, an ONU only support several subscribers, and the traffic load can not simply model by tidal effect. Further more, we can observe that the users are idle in most of the time. Take the upper right user as an example, whose active time is the least among the four users, the active time of this user only accounts for 10\% of the whole time. In fact, according to the statistics of the 1000 Internet users, the active and idle time are 20\% and 80\%, respectively. Under the guideline of green optical access networks, there should be a high efficient algorithms for energy saving.
+Fig. \ref{user_state} shows four users' states in a week, who are selected randomly from the 1000 Internet users. Fig. \ref{user_state} indicates that the users' active time may be different from each other. In addition, an ONU only support several subscribers, and the traffic load can not be simply modeled by tidal effect. Further more, we can observe that the users are idle in most of the time. Take the upper right user as an example, whose active time is the least among the four users, the active time of this user only accounts for 10\% of the whole time. In fact, according to the statistics of the 1000 Internet users, the active and idle time are 20\% and 80\%, respectively. Under the guideline of green optical access networks, there should be a high efficient algorithm for energy saving.
 
-If we know the users' states, we could infer the status of the ONU that connects to these users. When the ONUs are idle, cyclic sleep mode are activated and longer sleep period could be applied. In that case, more energy are saved and it does not degrade the QoS since no users are using Internet service. The question is in cyclic sleep mode, we need to determine the sleep period before an ONU goes into sleep status, which means the OLT are required to estimate the ONU's status before it grants the sleep period. Luckily, from the graph, we can realize that the users' active and idle periods are regular in some degree. In next subsection, we introduce two methods on how to estimate the users' states.
+If we know the user states, we could infer the status of the ONU that connects to these users. When the ONUs are idle, cyclic sleep mode are activated and longer sleep period could be applied. In that case, more energy are saved and it does not degrade the QoS since no users are using Internet service. The question is in cyclic sleep mode, we need to determine the sleep time before an ONU goes into sleep status, which means the OLT are required to estimate the ONU's status before it grants the sleep period. Luckily, from the graph, we can realize that the users' active and idle time are regular in some degree. In next subsection, we introduce two methods on how to predict the user states.
 
-\subsection{How to Estimate the Users' States}
+\subsection{How to Predict the User States}
 
-\begin{figure}[t]
+\begin{figure}[!t]
+  \centering 
+  \includegraphics[width=1\columnwidth]{user_state.pdf}\\ 
+  \caption{ Four users' states in a week.}
+  \label{user_state}
+\end{figure}
+
+\begin{figure}[!t]
   \centering 
   \includegraphics[width=1\columnwidth]{tree.pdf}\\ 
   \caption{ A simple case for decision tree.}
   \label{tree}
 \end{figure}
 
-The first method is a simple one. Intuitively, the users' active and idle states occur periodically. For users with different occupations, they may have different periodic features. So a straightforward way to estimate a user's state is to use his/her state logs in last several weeks. For example, if a user's states are mostly active in last several Friday nights, it is very likely that this user may use Internet service in next Friday nights. The dataset we mention before provides activity logs in four weeks. We divide the dataset into two parts, i.e., train set and test set. Train set contains activity logs in the first three weeks and test set contains the last week.
+The first method is a simple one. Intuitively, the users' active and idle states occur periodically. For users with different characteristics, like occupation, age, and gender, they may have different periodic features. So a straightforward way to estimate a user's state is to use his/her state logs in last several weeks. For example, if a user's states are mostly active in last several Friday nights, it is very likely that this user is active in next Friday night. Fig. \ref{user_state} supports our assumption in some degree. The dataset we mention before provides activity logs in four weeks. To evaluate the prediction methods' performances, we divide the dataset into two parts, i.e., train set and test set. Train set contains activity logs in the first three weeks and test set contains the last week.
 
-So the first method in estimating the users' states, denoted Lweek in this paper, is expressed below. To estimate a user's state in a certain period, we count the most occured state in that period in the last three weeks and use it to represent our predicted result. This method does not require complex algorithms, but lacks of accuracy, which we will see in the next subsection.
+So the first method in estimating the user states, denoted Lweek in this paper, is expressed below. To estimate a user's state in a certain period, we count the most occured state in that period in the last three weeks and use it to represent the predicted result. This method does not require complex algorithms, but lacks of accuracy, which we will see in the next subsection.
 
-The second method is called decision tree (Dtree) \cite{Kotsiantis2013}, which is used for classification. Our target is to decide a user's state whether it is active or idle, and that could be regarded as a classification problem. Fig. \ref{tree} depicts a simple case for decision tree. The decision tree is built according to the users' historical logs with the users' features we selected, which are date, age, time, and gender in this simple case. The leaf nodes in the decision tree act as the classification results, i.e., active or idle state in our task. The non-leaf nodes serve as the classification conditions. Upon the decison tree is constructed, we could use it to predict a user's state. Take Fig. \ref{tree} as an example, we want to know a middle-age male user's state in Sunday night. Look the picture from top to bottom, in the first calssification condition, we select "day off" side. Then in the age classification condition, we choose the "middle" branch. And in the final classification condition, according to the user's gender, male, we could estimate that this user's state is active in Sunday night. The path is marked by red arrows in Fig. \ref{tree}. Note that the diagram does not represent the truth of our dataset. In fact, the decision tree constructed by the train set is larger and much complex than this one. 
+The second method is called decision tree (Dtree) \cite{Kotsiantis2013}, which is used for classification in machine learning. Our target is to decide a user's state whether it is active or idle, and that could be regarded as a classification problem. Fig. \ref{tree} depicts a simple case for decision tree. The decision tree is built according to the users' historical logs with the users' features we selected, which are date, age, time, and gender in this simple case. The leaf nodes in the decision tree act as the classification results, i.e., active or idle state in our task. The non-leaf nodes serve as the classification conditions. Upon the decison tree is constructed, we could use it to predict the user states. Take Fig. \ref{tree} as an example, we want to know a middle-age male user's state in Sunday night. Look the picture from top to bottom, in the first calssification condition, we select "day off" side. Then in the age classification condition, we choose the "middle" branch. And in the final classification condition, according to the user's gender, male, we could estimate that this user's state is active in Sunday night. The path is marked by red arrows in Fig. \ref{tree}. Note that the diagram does not represent the truth of our dataset. In fact, the decision tree constructed by the train set is larger and much more complex than this one. 
 
 In this paragraph, we discuss how we build the decision tree using the train set. As we stated before, we divide a day into 24 periods and a user has 24 states in a day. Then a state can be written as the following format: $(user$\textunderscore $id$, $gender, age, education, occupation, time, date)$. This is a completed sample of a state. The elements of a sample are called features. In our task, we select seven features to build a sample. The description of the features are discussed below.
 
@@ -612,16 +617,16 @@ In this paragraph, we discuss how we build the decision tree using the train set
   \item[-] $date$: From Monday to Sunday.
 \end{itemize}
 
-In train set, we have 504000 samples (1000 users $\times$ 3 weeks $\times$ 7 days $\times$ 24 periods) and 168000 samples in test set. After the construction of decision tree using train set, we use the samples in test set to estimate a user's state by the tree. The test set is used for checking out the performance of the tree.
+In train set, we have 504000 samples (1000 users $\times$ 3 weeks $\times$ 7 days $\times$ 24 periods) and 168000 samples in test set. After the construction of decision tree using train set, we use the samples in test set to estimate a user's state by the tree. The test set is used for checking out the performance of the tree. 
 
-Here we analyze the complexity in generating a decision tree. We use $M$ and $N$ to represent the number of samples and features, respectively. There are several criterions in constructing a tree, and the shape of the tree may be diverse if we apply different criterions. Here we adopt Classification and Regression Trees (CART). CART constructs binary trees that yields the largest information gain at each node. In general, the complexity of constructing a balanced binary trees is $O(Mlog(M))$. Though CART attempts to build balanced binary trees, the tree will not always be strictly balanced. We assumes that the subtrees are approximately balanced. Each node has to find the feature that provides the largest reduction in entropy, whose complexity is $O(N)$. There are $M$ nodes and the total complexity is $O(M^{2}Nlog(M)$.
+Here we analyze the complexity in generating a decision tree. We use $M$ and $N$ to represent the number of samples and features, respectively. There are several criterions in constructing a tree, and the shape of the tree may be diverse if we apply different criterions. The prediction results of decision tree with different shape may have a slight difference. Here we adopt Classification and Regression Trees (CART). CART constructs binary trees that yields the largest information gain at each node. In general, the complexity of constructing a balanced binary trees is $O(Mlog(M))$. Though CART attempts to build balanced binary trees, the tree will not always be strictly balanced. We assumes that the subtrees of the decision tree are approximately balanced. Each node has to find the feature that provides the largest reduction in entropy, whose complexity is $O(N)$. There are $M$ nodes and the total complexity is $O(M^{2}Nlog(M)$.
 
 \subsection{Prediction Results}
-When the decision tree is completed, we could use the samples in test set to evaluate the prediction performance. 
+When the decision tree is completed, we could use the samples in test set to evaluate the prediction performances. In this part, we show the results by two prediction methods, Lweek and Dtree.
 
 \begin{table}[H]
 \centering
-\caption{Prediction Results on FTTD Scenario}
+\caption{Prediction Results in FTTD Scenario}
 \label{table_FTTD}
 \begin{tabular}{llrrc}
   \toprule
@@ -639,7 +644,7 @@ idle & idle & 76.58\% & 71.17\% & True\\
 
 \begin{table}[H]
 \centering
-\caption{Prediction Results on FTTH Scenario}
+\caption{Prediction Results in FTTH Scenario}
 \label{table_FTTH}
 \begin{tabular}{llrrc}
   \toprule
@@ -655,84 +660,150 @@ idle & idle & 62.86\% & 52.33\% & True\\
 \end{tabular}  
 \end{table}
 
-\subsubsection{FTTD Scenario} First we show the results on FTTD scenario. The decision tree is used for the users' states estimation, and we need to infer the ONU's status according to the states of the users it connects to. On FTTD scenario, an ONU only serves a subscriber, so their status remain the same.
+\subsubsection{FTTD Scenario} First we show the results in FTTD scenario. The decision tree is used for the user states estimation, and we need to infer the ONU's status according to the states of the users it connects to. In FTTD scenario, an ONU only serves a subscriber, so their status remain the same.
 
-Table \ref{table_FTTD} demonstrates the prediction results on FTTD scenario. Ground truth means the actual state of the user and prediction means the predicted states by Dtree or Lweek, two methods on estimating the users' states and we have showed before. True or False stands for whether we predict a state accurately or not. Dtree predicts 15.33\% active states and 10.05\% of over all samples are accurate while 5.28\% are inaccurate. 85.67\% idle states are predicted and 76.58\% of overall samples are accurate while 8.09\% are inaccurate. The total accuracy of Dtree is 86.63\%. For Lweek, it predicts 18.49\% active states and 7.80\% of over all samples are accurate while 10.69\% are inaccurate. 81.51\% idle states are predicted and 71.17\% of overall samples are accurate while 10.34\% are inaccurate. The total accuracy of Lweek is 78.97\%. According to the toal accuracy, we know that Dtree predicts more accurately than Lweek.
+Table \ref{table_FTTD} demonstrates the prediction results in FTTD scenario. Ground truth means the actual state of the user and prediction means the predicted states by Dtree or Lweek, two methods on estimating the user states that we have showed before. True or False stands for whether we predict a state accurately or not. Dtree predicts 15.33\% active states and 10.05\% of over all samples are accurate while 5.28\% are inaccurate. 85.67\% idle states are predicted and 76.58\% of overall samples are accurate while 8.09\% are inaccurate. The total accuracy of Dtree is 86.63\%. For Lweek, it predicts 18.49\% active states and 7.80\% of over all samples are accurate while 10.69\% are inaccurate. 81.51\% idle states are predicted and 71.17\% of overall samples are accurate while 10.34\% are inaccurate. The total accuracy of Lweek is 78.97\%. According to the toal accuracy, we know that Dtree predicts more accurately than Lweek.
 
-From Table \ref{table_FTTD}, we find another interesting fact. The actual active states accounts for 18.14\% and idle states are 81.86\%. In the predicted results by Lweek, the active and idle states make up 18.49\% and 81.51\%, respectively. The proportions are pretty close, though the accuracy of Lweek is not very idle. It is because the proportions of active and idle states for a large amount of users are stable at a period of time. Lweek predicts users' states directly by historical states, its predicted results portray the characteristics of the users' states in the past time. As for Dtree, it uses more features and builds decision tree based on maximum information gain, which performs better than Lweek.
+From Table \ref{table_FTTD}, we find another interesting fact. The actual active states accounts for 18.14\% and idle states are 81.86\%. In the predicted results by Lweek, the active and idle states make up 18.49\% and 81.51\%, respectively. The proportions are pretty close, though the accuracy of Lweek is not very ideal. It is because the proportions of active and idle states for a large amount of users are stable at a period of time. Lweek predicts user states directly by historical states, its predicted results portray the characteristics of the user states in the past time. As for Dtree, it uses more features and builds decision tree based on maximum information gain, which performs better than Lweek.
 
 \subsubsection{FTTH Scenario}
-On FTTH scenario, a ONU serves several users and predicting a ONU's status becomes a littel more complex. We suppose the number of ONUs is 128 and select 256 users randomly. Then we assign the users to the ONUs. The number of users assigned to each ONU ranges from one to three.In this paper, we assume that if one or more than one users are active, then the associated ONU's status is active. Only all connected users are idle can we call an ONU idle. 
+In FTTH scenario, an ONU serves several users and predicting an ONU's status becomes a littel more complex. We suppose the number of ONUs is 128 and select 256 users randomly. Then we assign the users to the ONUs in the following rules. The number of users assigned to each ONU ranges from one to three. In this paper, we assume that if one or more than one users are active, then the associated ONU's status is active. Only all connected users are idle can we call an ONU idle. 
 
-Table \ref{table_FTTH} demonstrates prediction results on FTTH scenario. Dtree predicts 24.80\% active states and 16.92\% of over all samples are accurate while 7.88\% are inaccurate. 75.20\% idle states are predicted and 62.86\% of overall samples are accurate while 12.34\% are inaccurate. The total accuracy of Dtree is 79.78\%. For Lweek, it predicts 31.15\% active states and 12.75\% of over all samples are accurate while 18.40\% are inaccurate. 68.85\% idle states are predicted and 52.33\% of overall samples are accurate while 16.52\% are inaccurate. The total accuracy of Lweek is 65.08\%. From the results we can learn that the accuracy rates decrease compared to FTTD scenario.
+Table \ref{table_FTTH} demonstrates prediction results in FTTH scenario. Dtree predicts 24.80\% active states and 16.92\% of over all samples are accurate while 7.88\% are inaccurate. 75.20\% idle states are predicted and 62.86\% of overall samples are accurate while 12.34\% are inaccurate. The total accuracy of Dtree is 79.78\%. For Lweek, it predicts 31.15\% active states and 12.75\% of over all samples are accurate while 18.40\% are inaccurate. 68.85\% idle states are predicted and 52.33\% of overall samples are accurate while 16.52\% are inaccurate. The total accuracy of Lweek is 65.08\%. From the results we can learn that the accuracy rates decrease compared to FTTD scenario.
 
 \section{Performance Evaluation}
+\subsection{Simulation Setup}
 
+\begin{table}[t]
+\centering
+\caption{Simulation Parameters}
+\label{parameter}
+\begin{tabular}{llc}
+  \toprule
+Symbol & Meaning & Value\\  
+  \midrule
+$N$ & The number of ONUs & 128\\  
+$RTT$ & Round-trip time & 0.2ms\\ 
+$T_{sleep}$ & sleep time in a sleep cycle & 5-100ms\\
+$T_{awaiting}$ & \tabincell{c}{Awaiting time before an ONU\\goes into sleep status} & 5ms\\
+$T_{recovery}$ & \tabincell{c}{Recovery and synchronization time \\needed to power up an ONU} & 2ms\\ 
+$T_{guard}$ & \tabincell{c}{Interval between upstream data \\ from two ONUs} & 5$\mu$s\\ 
+$P_{high}$ & energy consumption in active state & 6.35W\\ 
+$P_{low}$ & energy consumption in idle state  & 0.70W\\
+$\lambda$ & packet arrive rate & 500-1500 frames/s\\ 
+$B$ & Buffer size & 1M\\
+$Max$\textunderscore${Grant}$ & \tabincell{c}{Maximum time slot assigned to \\an ONU in a polling cycle} & 50$\mu$s\\ 
+$R_{u}$ & Upstream channel bandwidth & 1G/s\\ 
+  \bottomrule
+\end{tabular}  
+\end{table}
 
-\subsubsection{FTTD Scenario}
-\begin{figure*}[h]
+In this section, we evaluate the performances of our proposed scheme on FTTD and FTTH scenario, respectively. Besides energy efficiency, we investigate two main factors associated to QoS, packey delay and packet loss ratio, in this paper. Simulation parameters are showed on Table \ref{parameter}, whihc are mainly from \cite{6172273}. We compare our scheme to the conventional cyclic sleep policy, which adopts static sleep time and is denoted standard method in this paper.
+
+\subsection{FTTD Scenario}
+
+\begin{figure*}[!t]
     \centering 
     \subfigure[] { \label{fig:a} 
-        \includegraphics[width=0.474\columnwidth]{128_delay_energy_1.pdf}
+        \includegraphics[width=0.63\columnwidth]{128_standard_energy.pdf} 
     } 
     \subfigure[] { \label{fig:b} 
-        \includegraphics[width=0.474\columnwidth]{128_delay_energy_2.pdf} 
-    } 
-    \subfigure[] { \label{fig:c} 
-        \includegraphics[width=0.474\columnwidth]{128_delay_energy_3.pdf} 
+        \includegraphics[width=0.63\columnwidth]{128_standard_delay.pdf} 
     }
-    \subfigure[] { \label{fig:d} 
-        \includegraphics[width=0.474\columnwidth]{128_delay_energy_4.pdf} 
+    \subfigure[] { \label{fig:c} 
+        \includegraphics[width=0.63\columnwidth]{128_standard_loss.pdf} 
     } 
     \caption{Comparison between energy consumption (a), device lifetime (b), and migrated traffic amount (c) with a different number of postponed working wavelengths and postponed periods under traffic-III.} 
-    \label{delay_energy} 
+    \label{standard} 
 \end{figure*}
 
-\begin{figure*}[h]
+On FTTD scenario, we randomly select 128 users and assign to 128 ONUs in order. The packet arrival process follows Poisson distribution and the packet size is selectly from 64 to 1518 bytes uniformly. The packet arrive rate for a active user is 1000 frames per second, while an idle user only generates 10 frames per second. 
+
+Fig. depicts the energy consumption, packet delay, and packet loss performances with static sleep time, namely the standard method. The red line, labeled standard in the figure, is composed with 20 points. Each point means we adopt static sleep time, which are 5, 10, 15, ... , 100ms, respectively. It is obvious that with the raise of sleep time, energy consumption declines. From Fig. (a), the average energy consumption for each ONU when adopted cyclic sleep mode is less than 6.35W, which is the energy comsumption when a ONU is always in active status. We could learn that the cyclic sleep mode could achieve significant energy savings since users are idle in most of the time. The cost for energy efficiency is the deterioration of packet delay and packet loss ratio, which are shown in Fig (b) and (c). The packet delay increases with the raise of sleep time. The packet loss ratio is zero when the sleep time is less than 60ms, but the ratio will increase sharply if we prolong the sleep time. When the sleep time is 100ms, the packet loss ratio is almost 5\%.
+
+\begin{figure*}[!t]
     \centering 
     \subfigure[] { \label{fig:a} 
-        \includegraphics[width=0.474\columnwidth]{128_loss_energy_1.pdf}
+        \includegraphics[width=0.63\columnwidth]{128_predict_energy.pdf} 
     } 
     \subfigure[] { \label{fig:b} 
-        \includegraphics[width=0.474\columnwidth]{128_loss_energy_2.pdf} 
-    } 
-    \subfigure[] { \label{fig:c} 
-        \includegraphics[width=0.474\columnwidth]{128_loss_energy_3.pdf} 
+        \includegraphics[width=0.60\columnwidth]{128_predict_delay.pdf}
     }
-    \subfigure[] { \label{fig:d} 
-        \includegraphics[width=0.474\columnwidth]{128_loss_energy_4.pdf} 
+    \subfigure[] { \label{fig:c} 
+        \includegraphics[width=0.63\columnwidth]{128_predict_loss.pdf} 
     } 
     \caption{Comparison between energy consumption (a), device lifetime (b), and migrated traffic amount (c) with a different number of postponed working wavelengths and postponed periods under traffic-III.} 
-    \label{loss_energy} 
+    \label{predict} 
 \end{figure*}
 
-\begin{figure*}[h]
+Fig. shows the simulation results when we apply two kinds of sleep time, i.e., short and long sleep time, according to the prediction results of ONU status. The short sleep time in the Fig. is fixed to 10ms while long sleep time ranges from 15ms to 100ms. The green line, marked precise in Fig., means the prediction results are 100\% correctly. In other words, we know an ONU's status in advance. Similar to the performances by standard method, energy efficiency is improved when long sleep time increase with the degeneration of packet delay and packet loss ratio. From the pictures, we could learn that precise method could achieve high energy efficiency with slight QoS degeneration. For packet delay performances, the delay is around 1ms when long sleep time is 15ms and the delay is only about 3ms if we increase the sleep long time to 100ms. For packet loss ratio performances, precise method realizes zero packet loss for all long sleep time. It is because we apply short sleep period to prevent packet loss when the ONU is in active status. Long sleep period is implemented in idle status and does not bring about packet loss since the packet arrive rate is extremely low. 
+
+Though predicting an ONU's status 100\% precisely is hardly possible, we still could improve the prediction accuracy by some classification algorithms. In the previous section, we have achieved 86.63\% accuracy rate by Dtree and 78.97\% by Lweek. And from Fig., performances by Dtree are better than Lweek since the accuracy rate of Dtree is higher than Dtree. When accuracy rate is 100\%, it is the precise line.
+
+\begin{figure*}[!t]
     \centering 
     \subfigure[] { \label{fig:a} 
-        \includegraphics[width=0.474\columnwidth]{128_segment_delay_1.pdf}
+        \includegraphics[width=0.63\columnwidth]{128_segment_delay_1.pdf} 
     } 
     \subfigure[] { \label{fig:b} 
-        \includegraphics[width=0.474\columnwidth]{128_segment_delay_2.pdf} 
-    } 
+        \includegraphics[width=0.63\columnwidth]{128_segment_delay_2.pdf} 
+    }
     \subfigure[] { \label{fig:c} 
-        \includegraphics[width=0.474\columnwidth]{128_segment_loss_1.pdf} 
+        \includegraphics[width=0.63\columnwidth]{128_segment_delay_3.pdf} 
     }
     \subfigure[] { \label{fig:d} 
-        \includegraphics[width=0.474\columnwidth]{128_segment_loss_2.pdf} 
+        \includegraphics[width=0.63\columnwidth]{128_segment_loss_1.pdf} 
     } 
+    \subfigure[] { \label{fig:e} 
+        \includegraphics[width=0.63\columnwidth]{128_segment_loss_2.pdf} 
+    }
+    \subfigure[] { \label{fig:f} 
+        \includegraphics[width=0.63\columnwidth]{128_segment_loss_3.pdf} 
+    }
     \caption{Comparison between energy consumption (a), device lifetime (b), and migrated traffic amount (c) with a different number of postponed working wavelengths and postponed periods under traffic-III.} 
-    \label{loss_energy} 
+    \label{segment} 
 \end{figure*}
 
+Next, we compare the performances by standard method with three prediction methods, namely Dtree, Lweek, and precise, respetively. To make the differences more clear, we depict the energy-delay and energy-packet loss graphs. In this part, we fix the short sleep time to 10ms, 20ms, 40ms, and 60ms. The associated long sleep time is larger than the short sleep time but no more than 100ms. For each short sleep time, we select ten different values for the long sleep time. So there are total forty points in the graph for each prediction method. 
 
+Fig. (a-c) show energy-delay performance comparision between standard method and prediction methods, and Fig. (a-c) show energy-packet loss performances. Points for each prediction method are divided into two parts, under and upper the standard line. It is clear that points under the standard line have a better performance than standard method in both energy efficiency and QoS. On the contrary, the performances of upper points is worse than the standard method. The gap between the under points and the standard line is larger, the more performance improvement is achieved. In Fig. (c), all points are under the standard line. As for the Dtree and Lweek method, two points are upper the standard line in Fig. (b) and more than ten upper points in Fig. (c). It is because compared to the precise method, Dtree and Lweek could not predict an ONU's status 100\% accurately. When an active ONU is predicted as idle status, long sleep time will be applied instead of short sleep time, which leads to longer packet delay and higher packet loss ratio, though more energy consumptions are saved. If an idle ONU is estimated as active status, the influence on packet delay and packet loss ratio is negligible, but energy efficiency deteriorates since short sleep time is adopted. The inaccurate prediction results will compensate the energy efficiency and QoS improvement by predition method. That is why some points' performances are worse than the standard method.
 
-\subsubsection{FTTH Scenario}
+It could be noticed that in Fig. (d-e), compared to the energy-delay performances, more points are upper the standard line. It is because packet loss ratio is more sensitive to the long sleep time. For example, we adopt 10ms as the short sleep period and 100ms as the long sleep period. When we incorrectly predict an active ONU as idle status, we apply 100ms as the sleep time as it occur packet loss. In standard method, to achieve the same energy efficiency, the cyclic sleep time is between the short and long sleep time, say 20ms. From Fig. (c), we could learn that 20ms could not occur packet loss. In this case, the packet loss ratio of prediction method is larger than the standard method. Under the accuracy of prediciton results we have made, we suggest the difference between short and long sleep time should not too large, aiming at avoiding packet loss performance degeneration. In that case, we still could achieve considerable energy efficiency and QoS improvement compared to standard method.
 
+\subsection{FTTH Scenario}
 
+\begin{figure*}[!t]
+    \centering 
+    \subfigure[] { \label{fig:a} 
+        \includegraphics[width=0.63\columnwidth]{256_segment_delay_1.pdf} 
+    } 
+    \subfigure[] { \label{fig:b} 
+        \includegraphics[width=0.63\columnwidth]{256_segment_delay_2.pdf} 
+    }
+    \subfigure[] { \label{fig:c} 
+        \includegraphics[width=0.63\columnwidth]{256_segment_delay_3.pdf} 
+    }
+    \subfigure[] { \label{fig:d} 
+        \includegraphics[width=0.63\columnwidth]{256_segment_loss_1.pdf} 
+    } 
+    \subfigure[] { \label{fig:e} 
+        \includegraphics[width=0.63\columnwidth]{256_segment_loss_2.pdf} 
+    }
+    \subfigure[] { \label{fig:f} 
+        \includegraphics[width=0.63\columnwidth]{256_segment_loss_3.pdf} 
+    }
+    \caption{Comparison between energy consumption (a), device lifetime (b), and migrated traffic amount (c) with a different number of postponed working wavelengths and postponed periods under traffic-III.} 
+    \label{segment} 
+\end{figure*}
 
-
+On FTTH scenario, we show the energy efficiency and QoS improvement by predicition method. Compared to FTTD scenario, we could notice that more points are upper the standard line and the under points are much closer to the standard line. In other words, the energy efficiency and QoS improvement is not as good as FTTD's. It is because the prediction accuracy on FTTH scenario is lower than on FTTD's. Dtree and Lweek realize 86.63\% and 78.97\% on FTTD scenario, respective. On FTTH scenario, these numbers drop to 79.78\% and 65.08\%, respectively. In Fig. , we could learn that through Lweek method, only a small part of the points could achieve slight improvement on energy efficiency and QoS. But for Lweek, shown in Fig. , quite a few points could realize considerable energy efficiency and QoS improvement. 
 
 \section{Conclusion}
+In this paper, we study the energy saving and QoS performances by cyclic sleep mode in optical access networks. Conventional cyclic sleep mode, which adopts static sleep time, strives to find a balance between energy saving and QoS performances. To further improve the energy efficiency and QoS performances in the optical access networks, we propose a novel cyclic sleep mode that apply long sleep time in idle status while short sleep time in active status. Since the sleep time needed to be predefined, we propose two prediction methods, Lweek and Dtree, to estimate the ONUs' status. Simulation results show that Dtree and Lweek could improve considerable energy efficiency and QoS performances improvement compared to conventional cyclic sleep mode. Since the accuracy of prediction results of Dtree is better than Lweek's, Dtree could provide better performances than Lweek, and the complexity of Dtree is acceptable. In future work, we try to upgrade the accuracy of prediction results, which could further improve the energy efficiency and QoS performances.
+
+
+\section*{Acknowledgment}
+This work was supported in part by projects under National 973 Program grant No. 2014CB340104/05 and NSFC under grant No. 61621064.
 
 %\subsection{Subsection Heading Here}
 %Subsection text here.
@@ -862,10 +933,7 @@ Table \ref{table_FTTH} demonstrates prediction results on FTTH scenario. Dtree p
 
 
 % use section* for acknowledgment
-\section*{Acknowledgment}
 
-
-The authors would like to thank...
 
 
 % Can use something like this to put references on a page
